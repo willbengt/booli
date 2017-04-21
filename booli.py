@@ -47,8 +47,14 @@ def main():
       newItem = parsed["sold"][i]
       output["sold"].append(newItem)
 
+    output["count"] = totalCount
+
+    output.pop('totalCount', None)
+    output.pop('limit', None)
+    output.pop('offset', None)
+
     with open('booli_'+query+'.json', 'w') as outfile:
-      json.dump(output["sold"], outfile, indent=4)
+      json.dump(output, outfile, indent=4)
 
 
 if __name__ == "__main__":
