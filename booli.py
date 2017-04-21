@@ -41,7 +41,7 @@ def main():
   totalCount = output["totalCount"]
   print("totalCount = "+str(totalCount))
 
-  noRequests = totalCount / limit + 1
+  noRequests = totalCount // limit + 1
 
   for i in range(1, noRequests): 
     offset = i * limit
