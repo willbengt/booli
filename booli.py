@@ -27,15 +27,19 @@ def callbooliapi(limit, query, offset):
 
   return data
 
+def main():
+  limit = 1000
+  query = "vasastan"
+  offset = 0
+  result = callbooliapi(limit, query, offset)
+  print "finished"
 
 
-limit = 1000
-query = "vasastan"
-offset = 0
+if __name__ == "__main__":
+    main()
 
-result = callbooliapi(limit, query, offset)
 
-print "finished"
+
 #print(callbooliapi(limit, query, offset))
 
 
