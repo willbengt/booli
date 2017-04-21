@@ -33,7 +33,7 @@ def callbooliapi(limit, query, offset):
 
 def main():
   limit = 1000
-  query = "vasastan"
+  query = sys.argv[1]
   offset = 0
 
   output = json.loads(callbooliapi(limit, query, offset))
@@ -57,7 +57,7 @@ def main():
     output.pop('limit', None)
     output.pop('offset', None)
 
-    with open('booli_'+query+'.json', 'w') as outfile:
+    with open('data_booli_'+query+'.json', 'w') as outfile:
       json.dump(output, outfile, indent=4)
 
 
