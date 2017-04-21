@@ -31,44 +31,25 @@ def main():
   limit = 1000
   query = "vasastan"
   offset = 0
-  result = callbooliapi(limit, query, offset)
-  print "finished"
+
+  output = json.loads(callbooliapi(limit, query, offset))
+
+  totalCount = output["totalCount"]
+  print("totalCount = "+str(totalCount))
+
+  noRequests = totalCount / limit + 1
+
+  for i in range(1, noRequests): 
+    offset = i * limit
+    parsed = json.loads(callbooliapi(limit, query, offset))
+    count = parsed["count"]
+    for i in range(0, count):
+      newItem = parsed["sold"][i]
+      output["sold"].append(newItem)
+
+    with open('booli_'+query+'.json', 'w') as outfile:
+      json.dump(output["sold"], outfile, indent=4)
 
 
 if __name__ == "__main__":
-    main()
-
-
-
-#print(callbooliapi(limit, query, offset))
-
-
-
-
-
-# parsed = json.loads(data)
-# output = parsed
-
-# totalCount = parsed["totalCount"]
-
-# print("totalCount = "+str(totalCount))
-
-# noRequests = totalCount / limit + 1
-
-# for i in range(1, noRequests): 
-#   offset = i * limit
-#   url = "/sold?q="+query+"&limit="+str(limit)+"&offset="+str(offset)+"&callerId="+callerId+"&time="+timestamp+"&unique="+unique+"&hash="+hashstr
-#   connection = httplib.HTTPConnection("api.booli.se") #python 2
-#   connection.request("GET", url)
-#   response = connection.getresponse()
-#   data = response.read()
-#   connection.close()
-#   parsed = json.loads(data)
-#   count = parsed["count"]
-#   for i in range(0, count):
-#     newItem = parsed["sold"][i]
-#     output["sold"].append(newItem)
-
-
-# with open('data.json', 'w') as outfile:
-#     json.dump(output["sold"], outfile, indent=4)
+  main()
