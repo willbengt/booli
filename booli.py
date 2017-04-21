@@ -1,5 +1,10 @@
-# import http.client #python 3
-import httplib # python 2
+import sys
+
+if sys.version_info[0] > 2:
+    import http.client as http
+else:
+    import httplib as http
+
 import time
 from hashlib import sha1
 import random
@@ -15,8 +20,7 @@ def callbooliapi(limit, query, offset):
   
   url = "/sold?q="+query+"&limit="+str(limit)+"&offset="+str(offset)+"&callerId="+callerId+"&time="+timestamp+"&unique="+unique+"&hash="+hashstr
   
-  # connection = http.client.HTTPConnection("api.booli.se") #python 3
-  connection = httplib.HTTPConnection("api.booli.se") #python 2
+  connection = http.HTTPConnection("api.booli.se")
   connection.request("GET", url)
   response = connection.getresponse()
   data = response.read()
