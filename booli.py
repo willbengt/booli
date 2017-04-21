@@ -1,4 +1,5 @@
-import http.client
+# import http.client #python 3
+import httplib # python 2
 import time
 from hashlib import sha1
 import random
@@ -17,7 +18,8 @@ offset = 0
 
 url = "/sold?q="+query+"&limit="+str(limit)+"&offset="+str(offset)+"&callerId="+callerId+"&time="+timestamp+"&unique="+unique+"&hash="+hashstr
 
-connection = http.client.HTTPConnection("api.booli.se")
+# connection = http.client.HTTPConnection("api.booli.se") #python 3
+connection = httplib.HTTPConnection("api.booli.se") #python 2
 connection.request("GET", url)
 response = connection.getresponse()
 data = response.read()
@@ -27,23 +29,28 @@ if response.status != 200:
     print("fail")
 
 parsed = json.loads(data)
+output = parsed
 
-totaltCount = parsed["totalCount"]
+totalCount = parsed["totalCount"]
 
+print("totalCount = "+str(totalCount))
 
+noRequests = totalCount / limit + 1
 
-with open('newItem.json') as json_data:
-    d = json.load(json_data)
+for i in range(1, noRequests): 
+  offset = i * limit
+  url = "/sold?q="+query+"&limit="+str(limit)+"&offset="+str(offset)+"&callerId="+callerId+"&time="+timestamp+"&unique="+unique+"&hash="+hashstr
+  connection = httplib.HTTPConnection("api.booli.se") #python 2
+  connection.request("GET", url)
+  response = connection.getresponse()
+  data = response.read()
+  connection.close()
+  parsed = json.loads(data)
+  count = parsed["count"]
+  for i in range(0, count):
+    newItem = parsed["sold"][i]
+    output["sold"].append(newItem)
 
-count = d["count"]
-
-#for i in range(0, count):
-    #newItem = d["listings"][i]
-    #parsed["listings"].append(newItem)
-    #print(i)
-
-#newItem = d["listings"][1]
-#parsed["listings"].append(newItem)
 
 with open('data.json', 'w') as outfile:
-    json.dump(parsed, outfile, indent=4)
+    json.dump(output["sold"], outfile, indent=4)
