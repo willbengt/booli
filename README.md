@@ -7,6 +7,9 @@ Step 3: Run command
 <br/>
 `python booli.py [API-KEY] [AREA]`
 <br/>
-Example:
 <br/>
-`python booli.py 1B8yORHjHUQwND84jnQ8pfLOCaj6NxFfi8HInjN4 birkastan`
+`[AREA]` should be exchanged to e.g.:
+* birkastan
+* vasastan
+* 914307
+* 98530
