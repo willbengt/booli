@@ -11,15 +11,15 @@ import random
 import string
 import json
 
-def callbooliapi(limit, query, offset):
+def callbooliapi(limit, query, offset, api_key):
   callerId = "williambengtsson"
   timestamp = str(int(time.time()))
   unique = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(16))
-  s = callerId+timestamp+"1B8yJRDjHUQwND92jnQ3awLOCaj6NxFfi3HInjN4"+unique
+  s = callerId+timestamp+api_key+unique
   hashstr = sha1(s.encode('utf-8')).hexdigest()
   
   url = "/sold?q="+query+"&limit="+str(limit)+"&offset="+str(offset)+"&callerId="+callerId+"&time="+timestamp+"&unique="+unique+"&hash="+hashstr
-  
+
   connection = http.HTTPConnection("api.booli.se")
   connection.request("GET", url)
   response = connection.getresponse()
@@ -33,22 +33,25 @@ def callbooliapi(limit, query, offset):
 
 def main():
   limit = 1000
-  query = sys.argv[1]
+  api_key = sys.argv[1]
+  query = sys.argv[2]
   offset = 0
-
-  output = json.loads(callbooliapi(limit, query, offset))
+  
+  output = json.loads(callbooliapi(limit, query, offset, api_key))
 
   totalCount = output["totalCount"]
   print("totalCount = "+str(totalCount))
 
   noRequests = totalCount // limit + 1
 
+  outfile = open('data_booli_'+query+'.json', 'w')
+
   for i in range(1, noRequests): 
     offset = i * limit
-    parsed = json.loads(callbooliapi(limit, query, offset))
+    parsed = json.loads(callbooliapi(limit, query, offset, api_key))
     count = parsed["count"]
-    for i in range(0, count):
-      newItem = parsed["sold"][i]
+    for j in range(0, count):
+      newItem = parsed["sold"][j]
       output["sold"].append(newItem)
 
     output["count"] = totalCount
@@ -57,9 +60,9 @@ def main():
     output.pop('limit', None)
     output.pop('offset', None)
 
-    with open('data_booli_'+query+'.json', 'w') as outfile:
-      json.dump(output, outfile, indent=4)
+    json.dump(output, outfile, indent=4)
 
+  outfile.close()
 
 if __name__ == "__main__":
   main()
