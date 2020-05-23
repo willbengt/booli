@@ -45,6 +45,7 @@ def main():
   noRequests = totalCount // limit + 1
 
   outfile = open('data_booli_'+query+'.json', 'w')
+  json.dump(output, outfile, indent=4)
 
   for i in range(1, noRequests): 
     offset = i * limit
