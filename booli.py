@@ -60,7 +60,8 @@ def main():
     output.pop('limit', None)
     output.pop('offset', None)
 
-    json.dump(output, outfile, indent=4)
+    with open('data_booli_'+query+'.json', 'w') as outfile:
+      json.dump(output, outfile, indent=4)
 
   outfile.close()
 
