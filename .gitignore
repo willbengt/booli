@@ -1,3 +1,5 @@
 api_key.txt
 ImportCombine.pbix
 booli_analysis.xlsx
+__pycache__/
+download/data_booli_*
