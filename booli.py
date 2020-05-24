@@ -31,20 +31,27 @@ def callbooliapi(limit, query, offset, api_key):
 
   return data
 
-def main():
+def booli_api():
   limit = 1000
-  api_key = sys.argv[1]
-  query = sys.argv[2]
+  print("Enter api-key:")
+  api_key = input()
+  print("\nEnter query (e.g. 'birkastan' or '98530'):")
+  query = input()
+  output_file = 'download/data_booli_'+query+'.json'
   offset = 0
   
   output = json.loads(callbooliapi(limit, query, offset, api_key))
 
+  if 'message' in output:
+    print("\nMessage: "+output["message"])
+    return
+
   totalCount = output["totalCount"]
-  print("totalCount = "+str(totalCount))
+  print("\nTotal number of reccords: "+str(totalCount)+"\n")
 
   noRequests = totalCount // limit + 1
 
-  outfile = open('data_booli_'+query+'.json', 'w')
+  outfile = open(output_file, 'w')
   json.dump(output, outfile, indent=4)
 
   for i in range(1, noRequests): 
@@ -61,10 +68,11 @@ def main():
     output.pop('limit', None)
     output.pop('offset', None)
 
-    with open('data_booli_'+query+'.json', 'w') as outfile:
+    with open(output_file, 'w') as outfile:
       json.dump(output, outfile, indent=4)
 
   outfile.close()
+  return output_file
 
 if __name__ == "__main__":
-  main()
+  booli_api()
