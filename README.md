@@ -1,5 +1,6 @@
 # booli api
-*Jupyter Notebook to make API call to the Booli database with real estate statistics*
+*Jupyter Notebook to make API call to the Booli database with real estate statistics in Sweden*
+<br/>
 Step 1: Go to https://mybinder.org/v2/gh/willbengt/jupyter/master to create Jupyter Notebook and the other files
 <br/>
 Step 2: Open the Jupyter Notebook (run.ipynb) from the Jupyter Home screen
